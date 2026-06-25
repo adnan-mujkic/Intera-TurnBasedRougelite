@@ -1,0 +1,39 @@
+--- SYSTEMS ---
+
+- Map Change System
+	- Refresh tiles (draw random tiles in grid)
+
+- Game Manager
+	- Game Start
+	- Determine game lose (goes back to main menu)
+	- Refresh map (Send event to map change system to change map tiles, spawn new enemies)
+	- Enemy Spawn logic (How many enemies and where they are positioned)
+	- SetAction(ction) caches last selected action
+	- UseAction, take last selected aciton, take list of game effects from it, call Apply Game Effect on cached target actor, Pass turn
+
+- Action uobject
+	- Has a list of GameEffects
+
+- Action Stats Component
+	- Define game stats as enums, component has a map of all enums to float which represents the value
+	- Make a uobject GameEffect, has to have a list of all EffectMod so the effect can modify multiple stats at the same time and GameplayExecutionScript class
+		- EffectMod is struct that will have Stat Enum, Mod Operation (enum: Add, Multiply, Override), Value
+		- GameplayExecutionScript is a uobject bueprint class that just has 1 function called Execute, takes Source action stats component and target action stats component
+	- Functions: GetStat(stat enum), ApplyGameEffect(GameEffect class)
+	
+- Actor targeting component
+	- On tick projects mouse until hit an actor (hint: mark enemy actors with actor tag Enemy), save last hit actor
+	- Listen to click input event, when pressed call UseAction() on Game manager
+	
+--- UI---
+
+- Main Menu 
+	- Start Game (Calls Game Start on game manager), hides main menu
+	- Options (Audio volume)
+	- Exit Game (Calls Quit Game function)
+	
+- Game UI
+	- Current Wave number in the top center
+	
+- Action Menu
+	- List of actions that character has
